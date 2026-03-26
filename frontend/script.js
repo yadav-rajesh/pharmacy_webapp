@@ -9,6 +9,36 @@ const openWhatsApp = (message) => {
   }
 };
 
+const setBusyState = (form, isBusy) => {
+  const submitButton = form.querySelector('button[type="submit"]');
+  if (!submitButton) {
+    return;
+  }
+
+  submitButton.disabled = isBusy;
+  submitButton.textContent = isBusy
+    ? submitButton.dataset.loadingText || "Please wait..."
+    : submitButton.dataset.defaultText || submitButton.textContent;
+};
+
+const postFormData = async (url, formData) => {
+  const response = await fetch(url, {
+    method: "POST",
+    body: formData
+  });
+
+  const contentType = response.headers.get("content-type") || "";
+  const data = contentType.includes("application/json")
+    ? await response.json()
+    : { message: await response.text() };
+
+  if (!response.ok) {
+    throw new Error(data.message || "Request failed");
+  }
+
+  return data;
+};
+
 const navToggle = document.querySelector("[data-nav-toggle]");
 const siteNav = document.querySelector("[data-site-nav]");
 
@@ -67,6 +97,10 @@ const setStatus = (form, message, type) => {
   status.className = `status-message ${type} is-visible`;
 };
 
+document.querySelectorAll('button[type="submit"]').forEach((button) => {
+  button.dataset.defaultText = button.textContent;
+});
+
 document.querySelectorAll("[data-file-input]").forEach((input) => {
   input.addEventListener("change", () => {
     const label = document.querySelector(`[data-file-name="${input.id}"]`);
@@ -81,7 +115,7 @@ document.querySelectorAll("[data-file-input]").forEach((input) => {
 });
 
 document.querySelectorAll("[data-inquiry-form]").forEach((form) => {
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(form);
     const medicine = formData.get("medicine");
@@ -96,20 +130,40 @@ document.querySelectorAll("[data-inquiry-form]").forEach((form) => {
       "Please confirm stock and next steps."
     ].join("\n");
 
-    openWhatsApp(message);
-    setStatus(form, "WhatsApp opened for a quick availability inquiry.", "info");
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.dataset.loadingText = "Saving inquiry...";
+    }
+
+    setBusyState(form, true);
+    try {
+      await postFormData("/api/inquiries", formData);
+      openWhatsApp(message);
+      form.reset();
+      setStatus(form, "Inquiry saved and WhatsApp opened for a quick response.", "success");
+    } catch (error) {
+      openWhatsApp(message);
+      setStatus(
+        form,
+        `${error.message}. WhatsApp still opened so you can continue the inquiry.`,
+        "error"
+      );
+    } finally {
+      setBusyState(form, false);
+    }
   });
 });
 
 const orderForm = document.querySelector("[data-order-form]");
 if (orderForm) {
-  orderForm.addEventListener("submit", (event) => {
+  orderForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(orderForm);
     const prescriptionInput = orderForm.querySelector("[data-file-input]");
     const selectedFile = prescriptionInput && prescriptionInput.files && prescriptionInput.files[0]
-      ? prescriptionInput.files[0].name
-      : "Will share in WhatsApp";
+      ? prescriptionInput.files[0]
+      : null;
+    const selectedFileName = selectedFile ? selectedFile.name : "Not uploaded";
 
     const message = [
       "Hello Padmavati Medicals,",
@@ -119,16 +173,39 @@ if (orderForm) {
       `Phone number: ${formData.get("phone") || ""}`,
       `Medicine name: ${formData.get("medicine") || ""}`,
       `Address: ${formData.get("address") || ""}`,
-      `Prescription file: ${selectedFile}`,
+      `Prescription file: ${selectedFileName}`,
       "",
       "Please confirm availability, pricing, and pickup or delivery guidance."
     ].join("\n");
 
-    openWhatsApp(message);
-    setStatus(
-      orderForm,
-      "WhatsApp opened. Attach the prescription image or PDF in the chat before sending.",
-      "success"
-    );
+    const submitButton = orderForm.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.dataset.loadingText = "Saving request...";
+    }
+
+    setBusyState(orderForm, true);
+    try {
+      await postFormData("/api/orders", formData);
+      openWhatsApp(message);
+      orderForm.reset();
+      const fileLabel = document.querySelector('[data-file-name="order-prescription"]');
+      if (fileLabel) {
+        fileLabel.textContent = "Accepted formats: JPG, PNG, PDF";
+      }
+      setStatus(
+        orderForm,
+        "Request saved in the system and WhatsApp opened for store follow-up.",
+        "success"
+      );
+    } catch (error) {
+      openWhatsApp(message);
+      setStatus(
+        orderForm,
+        `${error.message}. WhatsApp still opened so you can continue the order.`,
+        "error"
+      );
+    } finally {
+      setBusyState(orderForm, false);
+    }
   });
 }

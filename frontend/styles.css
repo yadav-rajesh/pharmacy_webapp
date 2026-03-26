@@ -382,6 +382,14 @@ main {
   transform: translateY(-2px);
 }
 
+.button:disabled,
+.button-secondary:disabled,
+.button-light:disabled {
+  cursor: wait;
+  opacity: 0.8;
+  transform: none;
+}
+
 .button {
   color: white;
   background: linear-gradient(135deg, var(--green), #23a874);
@@ -736,6 +744,11 @@ main {
 .status-message.info {
   color: var(--blue-deep);
   background: rgba(93, 184, 223, 0.14);
+}
+
+.status-message.error {
+  color: #8f2f34;
+  background: rgba(201, 68, 79, 0.12);
 }
 
 .faq-grid {
