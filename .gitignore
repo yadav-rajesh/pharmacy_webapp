@@ -1,5 +1,0 @@
-backend-data/
-build/
-backend/target/
-server.err.log
-server.out.log
