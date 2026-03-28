@@ -1,0 +1,92 @@
+:root {
+  --page-bg: linear-gradient(180deg, #f7f2e7 0%, #f0f4f8 48%, #e8eef2 100%);
+  --panel-bg: rgba(255, 252, 247, 0.82);
+  --panel-border: rgba(22, 58, 84, 0.12);
+  --panel-shadow: 0 24px 60px rgba(17, 36, 52, 0.12);
+  --chip-bg: rgba(255, 255, 255, 0.78);
+  --chip-border: rgba(22, 58, 84, 0.08);
+  --body-text: #314255;
+  --heading-text: #13293d;
+  --muted-text: #5f7181;
+  --code-bg: rgba(19, 41, 61, 0.08);
+  --accent: #163a54;
+  --accent-strong: #0f2b3f;
+  --accent-contrast: #f7f2e7;
+  --font-body: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
+  --font-heading: Georgia, 'Times New Roman', serif;
+  --font-mono: 'Courier New', monospace;
+  color: var(--body-text);
+  font-family: var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--page-bg);
+}
+
+button,
+code {
+  font-family: var(--font-mono);
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.9rem 1.2rem;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+button:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(22, 58, 84, 0.22);
+  outline-offset: 2px;
+}
+
+code {
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.4rem;
+  background: var(--code-bg);
+  color: var(--heading-text);
+}
+
+h1,
+h2 {
+  color: var(--heading-text);
+  font-family: var(--font-heading);
+  line-height: 1.1;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+p {
+  margin: 0;
+}
+
+#root {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
