@@ -3,7 +3,7 @@ import OrderForm from '../components/OrderForm.jsx'
 import PageHero from '../components/PageHero.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import usePageMeta from '../hooks/usePageMeta.js'
-import { orderBenefits } from '../siteContent.js'
+import { orderBenefits, pharmacy } from '../siteContent.js'
 
 function OrderPage() {
   usePageMeta(
@@ -32,13 +32,13 @@ function OrderPage() {
         <div className="side-panel-stack">
           <article className="info-card" id="whatsapp-order">
             <p className="eyebrow">WhatsApp Order</p>
-            <h3>WhatsApp ordering section is ready</h3>
+            <h3>WhatsApp ordering is live</h3>
             <p>
-              In the next step, we can connect this flow directly to your pharmacy WhatsApp
-              number with pre-filled medicine enquiry text.
+              Send your medicine list or prescription details directly on WhatsApp for faster
+              support from the store.
             </p>
-            <ActionLink className="button-link is-secondary" to="/contact#quick-contact">
-              Connect WhatsApp Details Next
+            <ActionLink className="button-link is-secondary" to={pharmacy.whatsappCta}>
+              Start WhatsApp Order
             </ActionLink>
           </article>
 

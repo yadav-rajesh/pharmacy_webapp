@@ -22,12 +22,12 @@ function SiteFooter() {
         </div>
 
         <div>
-          <p className="eyebrow">Next Content To Replace</p>
+          <p className="eyebrow">Next Content To Improve</p>
           <ul className="plain-list">
-            <li>Exact phone number</li>
-            <li>Exact shop address</li>
-            <li>Live business hours</li>
-            <li>Verified reviews and real store photos</li>
+            <li>Verified Google reviews</li>
+            <li>Real store and counter photos</li>
+            <li>Connected medicine request backend</li>
+            <li>Expanded local service details</li>
           </ul>
         </div>
       </div>

@@ -2,21 +2,25 @@ export const pharmacy = {
   name: 'Padmavati Medicals',
   city: 'Ichalkaranji',
   state: 'Maharashtra',
+  postalCode: '416115',
   headline: 'Trusted Pharmacy in Ichalkaranji - Padmavati Medicals',
   subheading:
     'Quality medicines, healthcare products, and trusted service for your family.',
   launchNote:
-    'Basic app foundation: replace placeholder contact details, Google reviews, and store photos before launch.',
+    'Business contact details are now live. Next, add verified reviews, real store photos, and connect the order form.',
   description:
     'A local pharmacy website foundation focused on trust, convenience, and easy ordering for families, senior citizens, and regular medicine customers.',
-  addressLine: 'Exact pharmacy address to be added',
-  phoneDisplay: 'Add your pharmacy phone number',
-  phoneCta: '/contact#quick-contact',
-  whatsappCta: '/order#whatsapp-order',
+  addressLine:
+    'Tin Batti Chat Rasta Chowk, Chandur Road, Kagwade Mala, Ichalkaranji, Maharashtra 416115',
+  phoneDisplay: '+91 97300 86267',
+  phoneCta: 'tel:+919730086267',
+  whatsappCta:
+    'https://wa.me/919730086267?text=Hello%20Padmavati%20Medicals%2C%20I%20want%20to%20order%20medicines.',
   directionsUrl:
-    'https://www.google.com/maps/search/?api=1&query=Padmavati+Medicals+Ichalkaranji',
+    'https://www.google.com/maps/dir/?api=1&destination=Tin%20Batti%20Chat%20Rasta%20Chowk%2C%20Chandur%20Road%2C%20Kagwade%20Mala%2C%20Ichalkaranji%2C%20Maharashtra%20416115',
   mapEmbedUrl:
-    'https://www.google.com/maps?q=Padmavati+Medicals+Ichalkaranji&output=embed',
+    'https://www.google.com/maps?q=Tin%20Batti%20Chat%20Rasta%20Chowk%2C%20Chandur%20Road%2C%20Kagwade%20Mala%2C%20Ichalkaranji%2C%20Maharashtra%20416115&output=embed',
+  mapsShareUrl: 'https://share.google/rXqUrAADNEmVeLZZI',
 }
 
 export const navigation = [
@@ -138,36 +142,35 @@ export const orderBenefits = [
   'Medicine availability inquiry ready',
   'Prescription upload field included',
   'Address capture for future delivery flow',
-  'WhatsApp-first order process can be added next',
+  'Direct WhatsApp order support available',
 ]
 
 export const hours = [
-  { label: 'Monday to Saturday', value: 'Add your exact working hours' },
-  { label: 'Sunday', value: 'Add holiday or half-day timing' },
+  { label: 'Open Daily', value: 'Morning to 10:45 PM' },
 ]
 
 export const serviceAreas = [
-  'Ichalkaranji',
-  'Kabnoor',
-  'Market Area',
-  'Residential neighborhoods nearby',
-  'Repeat medicine customers around town',
+  'Kagwade Mala',
+  'Tin Batti Chowk',
+  'Chandur Road',
+  'Central Ichalkaranji',
+  'Nearby residential areas',
 ]
 
 export const contactCards = [
   {
     title: 'Address',
-    value: 'Ichalkaranji, Maharashtra',
-    detail: 'Replace with the exact store address before launch.',
+    value: 'Tin Batti Chat Rasta Chowk, Chandur Road',
+    detail: 'Kagwade Mala, Ichalkaranji, Maharashtra 416115',
   },
   {
     title: 'Phone',
-    value: 'Add your pharmacy phone number',
-    detail: 'Connect this to a direct call button for faster conversions.',
+    value: '+91 97300 86267',
+    detail: 'Call directly or use WhatsApp for fast medicine enquiries and order requests.',
   },
   {
     title: 'Business Hours',
-    value: 'Update your live store timings',
-    detail: 'Clear timings build trust for walk-ins and urgent medicine requests.',
+    value: 'Open daily - Morning to 10:45 PM',
+    detail: 'Convenient for regular medicine purchases, local walk-ins, and urgent support.',
   },
 ]

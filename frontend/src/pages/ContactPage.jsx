@@ -44,7 +44,7 @@ function ContactPage() {
 
         <div className="map-card">
           <SectionHeading
-            description="Keep exact address, number, and shop timing updated here before the site goes live."
+            description="Use the live details below to call, message on WhatsApp, or visit the store directly."
             eyebrow="Map and Directions"
             title="Location visibility"
           />
@@ -57,8 +57,7 @@ function ContactPage() {
             title="Padmavati Medicals contact map"
           />
           <p className="map-note">
-            Current starter address line: {pharmacy.addressLine}. Replace this with the exact
-            shop address before launch.
+            Store address: {pharmacy.addressLine}
           </p>
         </div>
       </section>
