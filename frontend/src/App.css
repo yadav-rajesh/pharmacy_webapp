@@ -299,6 +299,11 @@
   padding: 1.35rem;
 }
 
+.review-card h3,
+.gallery-card h3 {
+  margin: 0.45rem 0 0;
+}
+
 .review-tag {
   color: #17714d;
   font-weight: 700;
@@ -308,6 +313,15 @@
   margin-top: 0.85rem;
 }
 
+.review-link {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 1rem;
+  color: #17694a;
+  font-weight: 700;
+}
+
 .gallery-art {
   height: 12rem;
   border-radius: 1.1rem;
@@ -315,6 +329,14 @@
     radial-gradient(circle at top right, rgba(86, 202, 180, 0.8), transparent 35%),
     linear-gradient(135deg, rgba(231, 246, 253, 1), rgba(228, 247, 239, 1));
   border: 1px solid rgba(28, 127, 176, 0.12);
+  margin-bottom: 1rem;
+}
+
+.gallery-image {
+  width: 100%;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(28, 127, 176, 0.12);
+  background: linear-gradient(135deg, rgba(231, 246, 253, 1), rgba(228, 247, 239, 1));
   margin-bottom: 1rem;
 }
 

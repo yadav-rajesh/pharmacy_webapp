@@ -4,10 +4,10 @@ function SiteFooter() {
       <div className="footer-grid">
         <div>
           <p className="eyebrow">Padmavati Medicals</p>
-          <h3>Basic pharmacy website foundation ready</h3>
+          <h3>Trusted local pharmacy support in Ichalkaranji</h3>
           <p>
-            This version already includes the five core pages, local positioning, CTA
-            structure, maps, testimonials area, and order form layout.
+            Built to help local families, senior citizens, and repeat-medicine
+            customers call, order on WhatsApp, and visit the store with confidence.
           </p>
         </div>
 
@@ -22,12 +22,12 @@ function SiteFooter() {
         </div>
 
         <div>
-          <p className="eyebrow">Next Content To Improve</p>
+          <p className="eyebrow">Why It Works</p>
           <ul className="plain-list">
-            <li>Verified Google reviews</li>
-            <li>Real store and counter photos</li>
-            <li>Connected medicine request backend</li>
-            <li>Expanded local service details</li>
+            <li>Live call and WhatsApp actions</li>
+            <li>Visible location and directions</li>
+            <li>Public trust signals from local listings</li>
+            <li>Mobile-first ordering flow</li>
           </ul>
         </div>
       </div>

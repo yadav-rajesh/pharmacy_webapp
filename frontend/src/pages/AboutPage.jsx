@@ -6,44 +6,57 @@ import { aboutPoints, pharmacy } from '../siteContent.js'
 function AboutPage() {
   usePageMeta(
     'About Padmavati Medicals | Trusted Pharmacy in Ichalkaranji',
-    'Learn about Padmavati Medicals, a local pharmacy website foundation focused on genuine medicines, customer-friendly service, and reliable healthcare support in Ichalkaranji.',
+    'Learn about Padmavati Medicals, a trusted local pharmacy in Ichalkaranji focused on genuine medicines, friendly service, and reliable healthcare support.',
   )
 
   return (
     <main className="page">
       <PageHero
-        description="A clean About page helps local customers feel they are dealing with a dependable neighborhood pharmacy, not an anonymous medical store."
+        description="Padmavati Medicals is built around genuine medicines, customer-friendly service, and dependable local healthcare support for families, senior citizens, and patients with regular medicine needs."
         eyebrow="About Us"
-        title="Trusted local pharmacy support for Ichalkaranji"
+        title="Trusted pharmacy support for Ichalkaranji families"
       />
 
       <section className="section dual-grid">
         <article className="info-card">
-          <h2>Why this page matters</h2>
+          <p className="eyebrow">Our Focus</p>
+          <h2>A neighborhood medical store customers can trust</h2>
           <p>
-            About content is one of the strongest trust sections for a local medical store.
-            It reassures customers about authenticity, service quality, and your local
-            presence.
+            Padmavati Medicals serves Ichalkaranji with a clear promise: provide quality
+            medicines, useful healthcare essentials, and a service experience that makes
+            every interaction straightforward.
           </p>
+          <ul className="plain-list">
+            <li>Trusted local pharmacy service in Ichalkaranji</li>
+            <li>Focus on genuine medicines and confident purchases</li>
+            <li>Helpful support for families, seniors, and repeat buyers</li>
+            <li>Easy contact by phone, WhatsApp, and walk-in visits</li>
+          </ul>
         </article>
 
         <article className="info-card accent-card">
           <p className="eyebrow">Padmavati Medicals</p>
-          <h2>Customer-first pharmacy positioning</h2>
+          <h2>Simple, professional, and helpful every day</h2>
           <p>{pharmacy.description}</p>
+          <p>
+            A strong local pharmacy should feel both professional and approachable.
+            That is the experience this store aims to offer for quick walk-ins, repeat
+            prescriptions, wellness needs, and urgent family purchases.
+          </p>
         </article>
       </section>
 
       <section className="section">
         <SectionHeading
-          description="These statements already follow the direction you gave and can be refined into your final brand story later."
-          eyebrow="Core Message"
-          title="About content foundation"
+          description="These are the strengths that help a nearby medical store earn repeat trust over time."
+          eyebrow="Why Customers Return"
+          title="Core strengths that build long-term confidence"
         />
         <div className="card-grid two-up">
           {aboutPoints.map((item) => (
-            <article className="info-card" key={item}>
-              <p>{item}</p>
+            <article className="info-card" key={item.title}>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
             </article>
           ))}
         </div>

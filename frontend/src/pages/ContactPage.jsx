@@ -13,9 +13,9 @@ function ContactPage() {
   return (
     <main className="page">
       <PageHero
-        description="The contact page is designed to remove hesitation and guide people toward a call, WhatsApp enquiry, or store visit."
+        description="Whether you want to call, place a WhatsApp order, get directions, or visit the medical store directly, every contact path is kept simple and immediate."
         eyebrow="Contact"
-        title="Contact Padmavati Medicals"
+        title="Reach Padmavati Medicals in the way that suits you best"
       />
 
       <section className="section dual-grid" id="quick-contact">
@@ -46,7 +46,7 @@ function ContactPage() {
           <SectionHeading
             description="Use the live details below to call, message on WhatsApp, or visit the store directly."
             eyebrow="Map and Directions"
-            title="Location visibility"
+            title="Visit the store with quick directions"
           />
           <iframe
             allowFullScreen=""
@@ -64,9 +64,9 @@ function ContactPage() {
 
       <section className="section">
         <SectionHeading
-          description="This section helps tell nearby residents that your pharmacy is relevant to their area and accessible for quick support."
+          description="Padmavati Medicals is positioned for customers around central Ichalkaranji who want a nearby and dependable pharmacy."
           eyebrow="Service Areas"
-          title="Nearby customers we want to attract"
+          title="Serving local residents around central Ichalkaranji"
         />
         <div className="pill-row">
           {serviceAreas.map((item) => (

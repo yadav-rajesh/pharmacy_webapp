@@ -12,7 +12,7 @@ function ServicesPage() {
   return (
     <main className="page">
       <PageHero
-        description="This page is structured to help customers quickly understand what your pharmacy offers, even before they call or walk in."
+        description="Explore the main medicine and healthcare categories available for local families, senior citizens, and repeat customers."
         eyebrow="Products and Services"
         title="Medicine categories and healthcare essentials"
       />
@@ -33,8 +33,8 @@ function ServicesPage() {
 
       <section className="section note-panel">
         <p>
-          The product page is ready for category photos, brand highlights, and medicine
-          availability messaging in the next phase.
+          Need to confirm stock before visiting? Use WhatsApp or call the store for
+          quick medicine availability support.
         </p>
       </section>
     </main>

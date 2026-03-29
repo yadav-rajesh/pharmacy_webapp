@@ -1,4 +1,5 @@
 import ActionButtons from '../components/ActionButtons.jsx'
+import ActionLink from '../components/ActionLink.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import usePageMeta from '../hooks/usePageMeta.js'
 import {
@@ -6,8 +7,8 @@ import {
   heroHighlights,
   pharmacy,
   quickStats,
+  reviewHighlights,
   serviceAreas,
-  testimonials,
   trustBadges,
 } from '../siteContent.js'
 
@@ -37,11 +38,12 @@ function HomePage() {
           </div>
 
           <aside className="hero-panel-card">
-            <p className="eyebrow">Built For Local Conversion</p>
-            <h2>Phone calls, WhatsApp orders, and walk-ins</h2>
+            <p className="eyebrow">Open Daily For Local Families</p>
+            <h2>Medicines, daily health products, and helpful support</h2>
             <p>
-              This basic version already places trust, nearby relevance, and clear action
-              buttons at the center of the experience.
+              Padmavati Medicals supports nearby customers with prescription medicines,
+              healthcare products, and quick contact paths for calls, WhatsApp orders,
+              and store visits.
             </p>
 
             <div className="mini-stat-list">
@@ -62,9 +64,9 @@ function HomePage() {
 
       <section className="section">
         <SectionHeading
-          description="A clean first version of the pharmacy website should quickly answer what you offer, why local families can trust you, and how they should contact you."
-          eyebrow="Trust Builders"
-          title="Core conversion features are already mapped"
+          description="Nearby customers usually want three things quickly: clear store timings, confidence in medicines, and a fast way to contact the pharmacy."
+          eyebrow="Why Customers Choose Us"
+          title="Local trust cues visitors can understand fast"
         />
         <div className="card-grid three-up">
           {quickStats.map((item) => (
@@ -79,9 +81,9 @@ function HomePage() {
       <section className="section dual-grid">
         <div className="map-card">
           <SectionHeading
-            description="Maps help nearby visitors move from online search to in-store visit, especially when they need medicines quickly."
+            description="A clear location, live directions, and a familiar landmark help turn local searches into walk-ins."
             eyebrow="Find The Store"
-            title="Google Maps section ready"
+            title="Easy to reach from central Ichalkaranji"
           />
           <iframe
             allowFullScreen=""
@@ -94,16 +96,17 @@ function HomePage() {
         </div>
 
         <div className="info-card stack-card">
-          <h3>Quick local reassurance</h3>
+          <h3>What nearby customers usually need</h3>
           <p>
-            This home page foundation is aimed at families, senior citizens, and
-            regular-medicine patients who want fast confidence before calling or visiting.
+            Families, senior citizens, and repeat-medicine customers want fast answers
+            before they leave home. Clear contact options and a visible location make
+            that easier.
           </p>
           <ul className="plain-list">
-            <li>Prescription support visibility</li>
-            <li>Medical and wellness product discovery</li>
-            <li>Friendly local-service positioning</li>
-            <li>Strong mobile-first call-to-action placement</li>
+            <li>Prescription medicine enquiries before visiting</li>
+            <li>Quick WhatsApp support for medicine availability</li>
+            <li>Convenient walk-ins for daily healthcare essentials</li>
+            <li>Friendly local service for repeat customers</li>
           </ul>
           <ActionButtons compact />
         </div>
@@ -111,15 +114,19 @@ function HomePage() {
 
       <section className="section">
         <SectionHeading
-          description="The layout is ready for real social proof. For now, these cards mark where verified customer feedback should go."
-          eyebrow="Testimonials"
-          title="Customer review section scaffold"
+          description="These trust cards use public listing proof so visitors can quickly verify the store before they call or visit."
+          eyebrow="Reviews and Trust Signals"
+          title="Public proof that supports local confidence"
         />
         <div className="card-grid three-up">
-          {testimonials.map((item) => (
-            <article className="review-card" key={item.audience}>
-              <p className="review-tag">{item.audience}</p>
-              <p className="review-text">{item.quote}</p>
+          {reviewHighlights.map((item) => (
+            <article className="review-card" key={item.title}>
+              <p className="review-tag">{item.eyebrow}</p>
+              <h3>{item.title}</h3>
+              <p className="review-text">{item.detail}</p>
+              <ActionLink className="review-link" to={item.linkUrl}>
+                {item.linkLabel}
+              </ActionLink>
             </article>
           ))}
         </div>
@@ -127,16 +134,19 @@ function HomePage() {
 
       <section className="section">
         <SectionHeading
-          description="The image gallery is in place so we can replace these cards with real pharmacy photos in the next pass."
-          eyebrow="Pharmacy Images"
-          title="Store photo section ready"
+          description="These visuals help communicate the storefront, customer support, and daily healthcare range while live directions stay one tap away."
+          eyebrow="Store Visuals"
+          title="A cleaner presentation of the pharmacy experience"
         />
         <div className="card-grid three-up">
           {galleryCards.map((item) => (
             <article className="gallery-card" key={item.title}>
-              <div className="gallery-art" />
+              <img alt={item.alt} className="gallery-image" src={item.image} />
               <h3>{item.title}</h3>
               <p>{item.text}</p>
+              <ActionLink className="review-link" to={item.linkUrl}>
+                {item.linkLabel}
+              </ActionLink>
             </article>
           ))}
         </div>
@@ -162,8 +172,8 @@ function HomePage() {
           <p className="eyebrow">Emergency Contact</p>
           <h2>Need medicines urgently?</h2>
           <p>
-            This section is ready for an emergency call or quick-response medicine inquiry
-            flow once your live number is added.
+            Call the store directly for urgent medicine support or use WhatsApp to ask
+            about availability before you travel.
           </p>
         </div>
         <ActionButtons compact />

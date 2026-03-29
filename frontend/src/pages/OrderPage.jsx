@@ -44,7 +44,7 @@ function OrderPage() {
 
           <article className="info-card">
             <p className="eyebrow">Medicine Availability Inquiry</p>
-            <h3>High-intent enquiry prompts</h3>
+            <h3>Why customers use this form</h3>
             <ul className="plain-list">
               {orderBenefits.map((item) => (
                 <li key={item}>{item}</li>

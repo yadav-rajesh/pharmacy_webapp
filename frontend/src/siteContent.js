@@ -1,3 +1,7 @@
+import counterVisual from './assets/gallery-pharmacist.svg'
+import storeVisual from './assets/gallery-store.svg'
+import wellnessVisual from './assets/gallery-wellness.svg'
+
 export const pharmacy = {
   name: 'Padmavati Medicals',
   city: 'Ichalkaranji',
@@ -7,9 +11,9 @@ export const pharmacy = {
   subheading:
     'Quality medicines, healthcare products, and trusted service for your family.',
   launchNote:
-    'Call and WhatsApp ordering are live. Next, add verified reviews, real store photos, and backend request storage.',
+    'Call, WhatsApp ordering, directions, and local trust signals are live so nearby customers can take action quickly.',
   description:
-    'A local pharmacy website foundation focused on trust, convenience, and easy ordering for families, senior citizens, and regular medicine customers.',
+    'Padmavati Medicals is a local pharmacy in Ichalkaranji focused on genuine medicines, customer-friendly guidance, and dependable support for families, senior citizens, and patients with regular medicine needs.',
   addressLine:
     'Tin Batti Chat Rasta Chowk, Chandur Road, Kagwade Mala, Ichalkaranji, Maharashtra 416115',
   phoneDisplay: '+91 97300 86267',
@@ -40,65 +44,95 @@ export const heroHighlights = [
 ]
 
 export const trustBadges = [
-  'Medical store for local families',
-  'Support for regular medicine needs',
-  'Senior citizen friendly assistance',
-  'Fast action-oriented mobile experience',
+  'Genuine medicines',
+  'Open daily',
+  'WhatsApp orders available',
+  'Friendly local service',
 ]
 
 export const quickStats = [
   {
-    title: 'Family-first care',
-    text: 'A reassuring website structure built to turn nearby searches into trust and visits.',
+    title: 'Open daily',
+    text: 'Morning to 10:45 PM for repeat medicines, family essentials, and convenient evening visits.',
   },
   {
-    title: 'Phone and WhatsApp focused',
-    text: 'Every page guides visitors toward quick action, especially for urgent medicine requirements.',
+    title: 'Prescription-ready support',
+    text: 'Customers can call or WhatsApp to check medicine needs before visiting the store.',
   },
   {
-    title: 'Built for local SEO',
-    text: 'The copy and page structure are aligned around pharmacy-related searches in Ichalkaranji.',
+    title: 'Easy local access',
+    text: 'Located near Tin Batti Chat Rasta Chowk on Chandur Road for quick walk-ins and repeat pickups.',
   },
 ]
 
-export const testimonials = [
+export const reviewHighlights = [
   {
-    audience: 'Family customer review slot',
-    quote:
-      'Replace this card with a real Google review about trusted medicines, fair guidance, and dependable local support.',
+    eyebrow: 'Latest public review',
+    title: '"Best way to get your prescription"',
+    detail: 'Shared by omkar chougule on Justdial on 21 Jan 2025.',
+    linkLabel: 'View review source',
+    linkUrl: 'https://www.justdial.com/Ichalkaranji/Chemists-in-Shirdhon/nct-10096237/page-4',
   },
   {
-    audience: 'Senior citizen review slot',
-    quote:
-      'Use this space for a genuine review highlighting polite staff, easy prescription support, and repeat medicine help.',
+    eyebrow: 'Local rating signal',
+    title: '4.4 rating on Justdial',
+    detail: 'Padmavati Medicals appears with a 4.4 listing rating in public Justdial pharmacy results for Ichalkaranji.',
+    linkLabel: 'Open listing',
+    linkUrl: 'https://www.justdial.com/Ichalkaranji/Chemists-in-Vishwakarma-Nagar/nct-10096231',
   },
   {
-    audience: 'Regular patient review slot',
-    quote:
-      'Add a real testimonial here about medicine availability, fast response, and confidence in Padmavati Medicals.',
+    eyebrow: 'Quick verification',
+    title: 'Check location, directions, and contact details',
+    detail: 'Customers can verify the store location before calling, messaging on WhatsApp, or walking in.',
+    linkLabel: 'Open Google Maps',
+    linkUrl: pharmacy.mapsShareUrl,
   },
 ]
 
 export const galleryCards = [
   {
-    title: 'Storefront Photo',
-    text: 'Replace with a clean exterior image that helps local residents recognize the shop instantly.',
+    title: 'Storefront Visual',
+    text: 'A clean storefront-style visual that supports recognition before customers arrive at the shop.',
+    image: storeVisual,
+    alt: 'Illustrated storefront visual for Padmavati Medicals',
+    linkLabel: 'Get Directions',
+    linkUrl: pharmacy.directionsUrl,
   },
   {
-    title: 'Medicine Counter',
-    text: 'Show the counter or pharmacist interaction area to build trust before the customer visits.',
+    title: 'Counter Support Visual',
+    text: 'Shows the service-led feel of prescription guidance, medicine queries, and helpful local assistance.',
+    image: counterVisual,
+    alt: 'Illustrated pharmacy counter support visual for Padmavati Medicals',
+    linkLabel: 'Call the Store',
+    linkUrl: pharmacy.phoneCta,
   },
   {
-    title: 'Healthcare Shelves',
-    text: 'Add a bright interior image featuring medicines, baby care, supplements, or wellness products.',
+    title: 'Wellness Shelves Visual',
+    text: 'Highlights the wider product mix customers expect, from supplements to personal care and daily essentials.',
+    image: wellnessVisual,
+    alt: 'Illustrated wellness shelves visual for Padmavati Medicals',
+    linkLabel: 'WhatsApp Order',
+    linkUrl: pharmacy.whatsappCta,
   },
 ]
 
 export const aboutPoints = [
-  'Trusted pharmacy serving Ichalkaranji with a local-first approach to medicine and healthcare support.',
-  'Focused on genuine medicines and careful guidance for families, senior citizens, and regular patients.',
-  'Customer-friendly service designed around clarity, convenience, and dependable local relationships.',
-  'Reliable healthcare support for prescription needs, daily essentials, wellness products, and follow-up visits.',
+  {
+    title: 'Trusted local service',
+    text: 'Serving Ichalkaranji with daily accessibility and a location that is easy for nearby families to reach.',
+  },
+  {
+    title: 'Genuine medicine focus',
+    text: 'Customers should feel confident that their pharmacy support starts with dependable medicines and clear guidance.',
+  },
+  {
+    title: 'Friendly customer care',
+    text: 'Families, senior citizens, and regular medicine buyers benefit from simple, respectful, and helpful service.',
+  },
+  {
+    title: 'Reliable healthcare support',
+    text: 'Phone, WhatsApp, and walk-in assistance make it easier to handle routine purchases and urgent medicine needs.',
+  },
 ]
 
 export const serviceCategories = [
