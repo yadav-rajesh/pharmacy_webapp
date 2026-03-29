@@ -10,8 +10,10 @@ export const pharmacy = {
   headline: 'Trusted Pharmacy in Ichalkaranji - Padmavati Medicals',
   subheading:
     'Quality medicines, healthcare products, and trusted service for your family.',
+  announcement:
+    'Open daily for medicine enquiries, WhatsApp orders, and quick directions across Ichalkaranji.',
   launchNote:
-    'Call, WhatsApp ordering, directions, and local trust signals are live so nearby customers can take action quickly.',
+    'Call, WhatsApp, or get directions in a tap so nearby customers can reach Padmavati Medicals quickly.',
   description:
     'Padmavati Medicals is a local pharmacy in Ichalkaranji focused on genuine medicines, customer-friendly guidance, and dependable support for families, senior citizens, and patients with regular medicine needs.',
   addressLine:

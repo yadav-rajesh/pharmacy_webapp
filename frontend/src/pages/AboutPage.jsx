@@ -1,13 +1,33 @@
 import PageHero from '../components/PageHero.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import usePageMeta from '../hooks/usePageMeta.js'
+import { buildBreadcrumbSchema, buildWebPageSchema } from '../seo.js'
 import { aboutPoints, pharmacy } from '../siteContent.js'
 
 function AboutPage() {
-  usePageMeta(
-    'About Padmavati Medicals | Trusted Pharmacy in Ichalkaranji',
-    'Learn about Padmavati Medicals, a trusted local pharmacy in Ichalkaranji focused on genuine medicines, friendly service, and reliable healthcare support.',
-  )
+  const title = 'About Padmavati Medicals | Trusted Pharmacy in Ichalkaranji'
+  const description =
+    'Learn about Padmavati Medicals, a trusted local pharmacy in Ichalkaranji focused on genuine medicines, friendly service, and reliable healthcare support.'
+
+  usePageMeta({
+    title,
+    description,
+    path: '/about',
+    keywords:
+      'About Padmavati Medicals, Pharmacy in Ichalkaranji, Trusted medical store in Ichalkaranji, Genuine medicines Ichalkaranji',
+    schema: [
+      buildWebPageSchema({
+        title,
+        description,
+        path: '/about',
+        type: 'AboutPage',
+      }),
+      buildBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'About Us', path: '/about' },
+      ]),
+    ],
+  })
 
   return (
     <main className="page">

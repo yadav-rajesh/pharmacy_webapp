@@ -1,13 +1,33 @@
 import PageHero from '../components/PageHero.jsx'
 import ServiceIcon from '../components/ServiceIcon.jsx'
 import usePageMeta from '../hooks/usePageMeta.js'
+import { buildBreadcrumbSchema, buildWebPageSchema } from '../seo.js'
 import { serviceCategories } from '../siteContent.js'
 
 function ServicesPage() {
-  usePageMeta(
-    'Products and Services | Medical Store Ichalkaranji',
-    'Explore prescription medicines, OTC medicines, supplements, baby care, personal care, diabetic care, and first aid products at Padmavati Medicals in Ichalkaranji.',
-  )
+  const title = 'Products and Services | Medical Store Ichalkaranji'
+  const description =
+    'Explore prescription medicines, OTC medicines, supplements, baby care, personal care, diabetic care, and first aid products at Padmavati Medicals in Ichalkaranji.'
+
+  usePageMeta({
+    title,
+    description,
+    path: '/services',
+    keywords:
+      'Prescription medicines Ichalkaranji, OTC medicines Ichalkaranji, Health supplements Ichalkaranji, Medical store Ichalkaranji',
+    schema: [
+      buildWebPageSchema({
+        title,
+        description,
+        path: '/services',
+        type: 'CollectionPage',
+      }),
+      buildBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Products', path: '/services' },
+      ]),
+    ],
+  })
 
   return (
     <main className="page">

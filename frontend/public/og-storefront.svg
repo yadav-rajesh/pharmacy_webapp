@@ -1,0 +1,20 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#E8F8FF"/>
+  <circle cx="1012" cy="120" r="92" fill="#C2F2E2"/>
+  <rect y="472" width="1200" height="158" fill="#D5F0FF"/>
+  <rect x="234" y="164" width="732" height="282" rx="28" fill="white"/>
+  <rect x="196" y="198" width="808" height="78" rx="18" fill="#0F8B5F"/>
+  <path d="M256 198H329L306 276H233L256 198Z" fill="#5DBEE2"/>
+  <path d="M379 198H451L434 276H362L379 198Z" fill="#B8ECFF"/>
+  <path d="M500 198H573L559 276H485L500 198Z" fill="#5DBEE2"/>
+  <path d="M623 198H696L686 276H612L623 198Z" fill="#B8ECFF"/>
+  <path d="M746 198H818L811 276H737L746 198Z" fill="#5DBEE2"/>
+  <path d="M868 198H923L941 276H862L868 198Z" fill="#B8ECFF"/>
+  <rect x="286" y="304" width="196" height="142" rx="16" fill="#DFF4EC"/>
+  <rect x="531" y="332" width="138" height="114" rx="16" fill="#EAF4FF"/>
+  <rect x="717" y="304" width="208" height="142" rx="16" fill="#DFF4EC"/>
+  <rect x="575" y="164" width="50" height="82" rx="14" fill="white"/>
+  <rect x="551" y="181" width="98" height="48" rx="14" fill="white"/>
+  <text x="600" y="112" text-anchor="middle" fill="#13363E" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="700">Padmavati Medicals</text>
+  <text x="600" y="514" text-anchor="middle" fill="#3E6A72" font-family="Segoe UI, Arial, sans-serif" font-size="30">Trusted pharmacy in Ichalkaranji for medicines, WhatsApp orders, and family care</text>
+</svg>

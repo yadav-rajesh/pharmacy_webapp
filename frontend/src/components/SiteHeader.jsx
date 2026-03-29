@@ -6,7 +6,7 @@ function SiteHeader() {
   return (
     <header className="site-header">
       <div className="top-banner">
-        <p>{pharmacy.launchNote}</p>
+        <p>{pharmacy.announcement}</p>
       </div>
 
       <div className="header-shell">

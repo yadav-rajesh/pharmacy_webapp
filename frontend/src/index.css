@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --page-bg: linear-gradient(180deg, #f7fcfb 0%, #eef8ff 52%, #e7f3ef 100%);
   --surface: rgba(255, 255, 255, 0.86);
   --border: rgba(35, 118, 94, 0.12);
@@ -27,6 +28,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 1rem;
 }
 
 body {

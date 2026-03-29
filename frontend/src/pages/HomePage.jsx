@@ -2,6 +2,7 @@ import ActionButtons from '../components/ActionButtons.jsx'
 import ActionLink from '../components/ActionLink.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import usePageMeta from '../hooks/usePageMeta.js'
+import { buildBreadcrumbSchema, buildWebPageSchema } from '../seo.js'
 import {
   galleryCards,
   heroHighlights,
@@ -13,10 +14,19 @@ import {
 } from '../siteContent.js'
 
 function HomePage() {
-  usePageMeta(
-    'Pharmacy in Ichalkaranji | Padmavati Medicals',
-    'Trusted pharmacy in Ichalkaranji for genuine medicines, prescription support, health products, and family healthcare essentials.',
-  )
+  const title = 'Trusted Pharmacy in Ichalkaranji | Padmavati Medicals'
+  const description =
+    'Trusted pharmacy in Ichalkaranji for genuine medicines, prescription support, health products, and family healthcare essentials.'
+
+  usePageMeta({
+    title,
+    description,
+    path: '/',
+    schema: [
+      buildWebPageSchema({ title, description, path: '/' }),
+      buildBreadcrumbSchema([{ name: 'Home', path: '/' }]),
+    ],
+  })
 
   return (
     <main className="page">
@@ -141,7 +151,13 @@ function HomePage() {
         <div className="card-grid three-up">
           {galleryCards.map((item) => (
             <article className="gallery-card" key={item.title}>
-              <img alt={item.alt} className="gallery-image" src={item.image} />
+              <img
+                alt={item.alt}
+                className="gallery-image"
+                decoding="async"
+                loading="lazy"
+                src={item.image}
+              />
               <h3>{item.title}</h3>
               <p>{item.text}</p>
               <ActionLink className="review-link" to={item.linkUrl}>

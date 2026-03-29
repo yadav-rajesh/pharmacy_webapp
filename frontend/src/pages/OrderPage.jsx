@@ -3,13 +3,28 @@ import OrderForm from '../components/OrderForm.jsx'
 import PageHero from '../components/PageHero.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import usePageMeta from '../hooks/usePageMeta.js'
+import { buildBreadcrumbSchema, buildWebPageSchema } from '../seo.js'
 import { orderBenefits, pharmacy } from '../siteContent.js'
 
 function OrderPage() {
-  usePageMeta(
-    'Order Medicines | Padmavati Medicals Ichalkaranji',
-    'Request medicines online from Padmavati Medicals with a simple enquiry flow for name, phone number, prescription, medicine name, and address.',
-  )
+  const title = 'Order Medicines | Padmavati Medicals Ichalkaranji'
+  const description =
+    'Request medicines online from Padmavati Medicals with a simple enquiry flow for name, phone number, prescription, medicine name, and address.'
+
+  usePageMeta({
+    title,
+    description,
+    path: '/order',
+    keywords:
+      'Order medicines Ichalkaranji, WhatsApp medicine order Ichalkaranji, Prescription medicine enquiry Ichalkaranji, Padmavati Medicals order',
+    schema: [
+      buildWebPageSchema({ title, description, path: '/order' }),
+      buildBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Order Medicines', path: '/order' },
+      ]),
+    ],
+  })
 
   return (
     <main className="page">

@@ -2,13 +2,33 @@ import ActionButtons from '../components/ActionButtons.jsx'
 import PageHero from '../components/PageHero.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import usePageMeta from '../hooks/usePageMeta.js'
+import { buildBreadcrumbSchema, buildWebPageSchema } from '../seo.js'
 import { contactCards, hours, pharmacy, serviceAreas } from '../siteContent.js'
 
 function ContactPage() {
-  usePageMeta(
-    'Contact Padmavati Medicals | Pharmacy Near Me in Ichalkaranji',
-    'Contact Padmavati Medicals for medicines, pharmacy directions, local support, and healthcare product enquiries in Ichalkaranji.',
-  )
+  const title = 'Contact Padmavati Medicals | Pharmacy Near Me in Ichalkaranji'
+  const description =
+    'Contact Padmavati Medicals for medicines, pharmacy directions, local support, and healthcare product enquiries in Ichalkaranji.'
+
+  usePageMeta({
+    title,
+    description,
+    path: '/contact',
+    keywords:
+      'Contact Padmavati Medicals, Pharmacy near me in Ichalkaranji, Medical store phone number Ichalkaranji, Get directions Padmavati Medicals',
+    schema: [
+      buildWebPageSchema({
+        title,
+        description,
+        path: '/contact',
+        type: 'ContactPage',
+      }),
+      buildBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Contact', path: '/contact' },
+      ]),
+    ],
+  })
 
   return (
     <main className="page">
