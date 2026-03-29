@@ -7,12 +7,13 @@ export const pharmacy = {
   subheading:
     'Quality medicines, healthcare products, and trusted service for your family.',
   launchNote:
-    'Business contact details are now live. Next, add verified reviews, real store photos, and connect the order form.',
+    'Call and WhatsApp ordering are live. Next, add verified reviews, real store photos, and backend request storage.',
   description:
     'A local pharmacy website foundation focused on trust, convenience, and easy ordering for families, senior citizens, and regular medicine customers.',
   addressLine:
     'Tin Batti Chat Rasta Chowk, Chandur Road, Kagwade Mala, Ichalkaranji, Maharashtra 416115',
   phoneDisplay: '+91 97300 86267',
+  whatsappNumber: '919730086267',
   phoneCta: 'tel:+919730086267',
   whatsappCta:
     'https://wa.me/919730086267?text=Hello%20Padmavati%20Medicals%2C%20I%20want%20to%20order%20medicines.',
@@ -142,7 +143,7 @@ export const orderBenefits = [
   'Medicine availability inquiry ready',
   'Prescription upload field included',
   'Address capture for future delivery flow',
-  'Direct WhatsApp order support available',
+  'Form submission now opens a WhatsApp order message',
 ]
 
 export const hours = [

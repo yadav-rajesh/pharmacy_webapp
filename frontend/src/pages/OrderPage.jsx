@@ -22,7 +22,7 @@ function OrderPage() {
       <section className="section order-layout">
         <div className="form-card">
           <SectionHeading
-            description="Simple fields, mobile-friendly layout, and clear action language make this a strong starting point for conversions."
+            description="When the form is submitted, it opens WhatsApp with the medicine request details already filled in."
             eyebrow="Request Medicine"
             title="Order form"
           />

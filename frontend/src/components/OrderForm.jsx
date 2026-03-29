@@ -1,4 +1,23 @@
 import { useState } from 'react'
+import { pharmacy } from '../siteContent.js'
+
+function buildWhatsAppOrderUrl(formState) {
+  const messageLines = [
+    `Hello ${pharmacy.name}, I want to order medicines.`,
+    '',
+    `Name: ${formState.name}`,
+    `Phone: ${formState.phone}`,
+    `Medicine Name: ${formState.medicineName}`,
+    `Address: ${formState.address}`,
+    `Prescription: ${formState.prescriptionName || 'Will share on WhatsApp'}`,
+    '',
+    'Please confirm availability.',
+  ]
+
+  return `https://wa.me/${pharmacy.whatsappNumber}?text=${encodeURIComponent(
+    messageLines.join('\n'),
+  )}`
+}
 
 function OrderForm() {
   const [formState, setFormState] = useState({
@@ -30,7 +49,9 @@ function OrderForm() {
 
   function handleSubmit(event) {
     event.preventDefault()
+    const whatsappUrl = buildWhatsAppOrderUrl(formState)
     setSubmitted(true)
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
 
   return (
@@ -88,6 +109,7 @@ function OrderForm() {
           <span>Upload Prescription</span>
           <input accept=".jpg,.jpeg,.png,.pdf" onChange={handleFileChange} type="file" />
           <small>{formState.prescriptionName || 'No file selected yet'}</small>
+          <small>After WhatsApp opens, attach the prescription file in the chat if needed.</small>
         </label>
       </div>
 
@@ -97,8 +119,8 @@ function OrderForm() {
 
       {submitted ? (
         <p className="success-message">
-          The form UI is ready. For immediate ordering right now, use the live WhatsApp
-          button while we connect this form to the backend next.
+          Your details were prepared for WhatsApp. If the chat did not open automatically,
+          use the WhatsApp button on this page and send the same prescription details there.
         </p>
       ) : null}
     </form>
