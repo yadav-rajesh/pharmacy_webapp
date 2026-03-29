@@ -97,8 +97,8 @@ function OrderForm() {
 
       {submitted ? (
         <p className="success-message">
-          Basic app note: this form currently demonstrates the user flow in the UI. Next we
-          can connect it to WhatsApp, email, or a backend order API.
+          The form UI is ready. For immediate ordering right now, use the live WhatsApp
+          button while we connect this form to the backend next.
         </p>
       ) : null}
     </form>

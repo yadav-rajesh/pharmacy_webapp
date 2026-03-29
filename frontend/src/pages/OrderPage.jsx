@@ -14,9 +14,9 @@ function OrderPage() {
   return (
     <main className="page">
       <PageHero
-        description="This first version gives you the exact medicine request flow we can later connect to WhatsApp orders or a proper backend order process."
+        description="Use the form for a structured medicine request or tap WhatsApp now for faster direct ordering and stock confirmation."
         eyebrow="Order Medicines"
-        title="Medicine request form with WhatsApp-ready flow"
+        title="Medicine request form with live WhatsApp ordering"
       />
 
       <section className="section order-layout">
