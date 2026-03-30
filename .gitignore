@@ -1,4 +1,6 @@
 backend-data/
+backend/data/
+/data/
 build/
 backend/target/
 server.err.log

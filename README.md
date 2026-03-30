@@ -16,6 +16,8 @@ cd backend
 
 Backend URL: `http://localhost:8080/api/health`
 
+The backend now persists medicine requests by default with a local H2 database and stores uploaded prescription files on disk.
+
 Run the frontend:
 
 ```powershell
@@ -26,6 +28,13 @@ npm run dev
 Frontend URL: `http://localhost:5173`
 
 The React app uses the Vite dev proxy, so requests to `/api/*` are forwarded to the Spring Boot server.
+
+## Backend persistence
+
+- Default local storage uses an H2 file database.
+- Prescription uploads are stored under the configured `medicine-requests.storage-dir`.
+- MySQL profile settings are available in `backend/src/main/resources/application-mysql.properties`.
+- PostgreSQL profile settings are available in `backend/src/main/resources/application-postgres.properties`.
 
 ## Production notes
 

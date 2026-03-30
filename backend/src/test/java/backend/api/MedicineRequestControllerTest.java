@@ -14,17 +14,24 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import backend.medicinerequest.MedicineRequestService;
+import backend.persistence.repository.MedicineRequestRepository;
 
-@WebMvcTest(MedicineRequestController.class)
-@Import({ApiExceptionHandler.class, MedicineRequestService.class})
-@TestPropertySource(properties = "medicine-requests.storage-dir=target/test-requests")
+@SpringBootTest
+@AutoConfigureMockMvc
+@TestPropertySource(properties = {
+	"medicine-requests.storage-dir=target/test-requests",
+	"spring.datasource.url=jdbc:h2:mem:medicine-request-test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE",
+	"spring.datasource.driver-class-name=org.h2.Driver",
+	"spring.datasource.username=sa",
+	"spring.datasource.password=",
+	"spring.jpa.hibernate.ddl-auto=create-drop"
+})
 class MedicineRequestControllerTest {
 
 	private static final Path STORAGE_ROOT = Path.of("target/test-requests");
@@ -32,9 +39,13 @@ class MedicineRequestControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@Autowired
+	private MedicineRequestRepository medicineRequestRepository;
+
 	@BeforeEach
 	@AfterEach
-	void clearStorage() throws IOException {
+	void clearState() throws IOException {
+		medicineRequestRepository.deleteAll();
 		deleteDirectory(STORAGE_ROOT);
 	}
 
@@ -61,20 +72,25 @@ class MedicineRequestControllerTest {
 			.andExpect(jsonPath("$.prescriptionUploaded").value(true))
 			.andExpect(jsonPath("$.requestId").isNotEmpty());
 
+		var savedRequests = medicineRequestRepository.findAll();
+
+		assertThat(savedRequests).hasSize(1);
+		var savedRequest = savedRequests.get(0);
+		assertThat(savedRequest.getName()).isEqualTo("Rajesh Yadav");
+		assertThat(savedRequest.getPhone()).isEqualTo("9730086267");
+		assertThat(savedRequest.getMedicineName()).isEqualTo("Paracetamol 650");
+		assertThat(savedRequest.getAddress()).isEqualTo("Ichalkaranji");
+		assertThat(savedRequest.getPrescriptionFile()).isNotNull();
+		assertThat(savedRequest.getPrescriptionFile().getOriginalFilename()).isEqualTo("rx.pdf");
+		assertThat(savedRequest.getPrescriptionFile().getRequestId()).isEqualTo(savedRequest.getRequestId());
+		assertThat(savedRequest.getPrescriptionFile().getSavedPath()).endsWith("/rx.pdf");
+		assertThat(savedRequest.getPrescriptionFile().getUploadedAt()).isNotNull();
+
 		try (var requestDirectories = Files.list(STORAGE_ROOT)) {
 			var storedDirectories = requestDirectories.filter(Files::isDirectory).toList();
 
 			assertThat(storedDirectories).hasSize(1);
-			var metadataPath = storedDirectories.get(0).resolve("request.txt");
-			var metadata = Files.readString(metadataPath);
-
-			assertThat(Files.exists(metadataPath)).isTrue();
 			assertThat(Files.exists(storedDirectories.get(0).resolve("rx.pdf"))).isTrue();
-			assertThat(metadata).contains("requestId=");
-			assertThat(metadata).contains("prescriptionOriginalFilename=rx.pdf");
-			assertThat(metadata).contains("prescriptionSavedPath=");
-			assertThat(metadata).contains("/rx.pdf");
-			assertThat(metadata).contains("prescriptionUploadedAt=");
 		}
 	}
 
