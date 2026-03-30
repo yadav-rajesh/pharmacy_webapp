@@ -35,13 +35,13 @@ public class MedicineRequestService {
 		var requestId = UUID.randomUUID().toString();
 		var createdAt = Instant.now();
 		var cleanedRequest = clean(request);
-		var prescriptionFileName = storeRequestFiles(requestId, cleanedRequest, prescription, createdAt);
+		var prescriptionUpload = storeRequestFiles(requestId, cleanedRequest, prescription, createdAt);
 
 		return new MedicineRequestResponse(
 			requestId,
 			"RECEIVED",
 			"Medicine request received successfully.",
-			prescriptionFileName != null,
+			prescriptionUpload != null,
 			createdAt
 		);
 	}
@@ -63,7 +63,7 @@ public class MedicineRequestService {
 		return value.trim();
 	}
 
-	private String storeRequestFiles(
+	private StoredPrescriptionUpload storeRequestFiles(
 		String requestId,
 		CreateMedicineRequest request,
 		MultipartFile prescription,
@@ -75,21 +75,23 @@ public class MedicineRequestService {
 			var requestDirectory = storageRoot.resolve(requestId).normalize();
 			Files.createDirectories(requestDirectory);
 
-			var prescriptionFileName = storePrescription(requestDirectory, prescription);
+			var prescriptionUpload = storePrescription(requestDirectory, requestId, prescription);
 			var storedRequest = new StoredMedicineRequest(
 				requestId,
 				request.name(),
 				request.phone(),
 				request.medicineName(),
 				request.address(),
-				prescriptionFileName,
 				"RECEIVED",
-				createdAt
+				createdAt,
+				prescriptionUpload == null ? null : prescriptionUpload.originalFilename(),
+				prescriptionUpload == null ? null : prescriptionUpload.savedPath(),
+				prescriptionUpload == null ? null : prescriptionUpload.uploadedAt()
 			);
 
 			Files.writeString(requestDirectory.resolve("request.txt"), buildMetadata(storedRequest));
 
-			return prescriptionFileName;
+			return prescriptionUpload;
 		} catch (IOException exception) {
 			throw new MedicineRequestStorageException(
 				"Could not store medicine request.",
@@ -98,8 +100,11 @@ public class MedicineRequestService {
 		}
 	}
 
-	private String storePrescription(Path requestDirectory, MultipartFile prescription)
-		throws IOException {
+	private StoredPrescriptionUpload storePrescription(
+		Path requestDirectory,
+		String requestId,
+		MultipartFile prescription
+	) throws IOException {
 		if (prescription == null || prescription.isEmpty()) {
 			return null;
 		}
@@ -134,7 +139,15 @@ public class MedicineRequestService {
 			Files.copy(inputStream, storedFile, StandardCopyOption.REPLACE_EXISTING);
 		}
 
-		return originalFilename;
+		var uploadedAt = Instant.now();
+		var savedPath = storageRoot.relativize(storedFile).toString().replace('\\', '/');
+
+		return new StoredPrescriptionUpload(
+			requestId,
+			originalFilename,
+			savedPath,
+			uploadedAt
+		);
 	}
 
 	private String buildMetadata(StoredMedicineRequest storedRequest) {
@@ -146,7 +159,9 @@ public class MedicineRequestService {
 			phone=%s
 			medicineName=%s
 			address=%s
-			prescriptionFileName=%s
+			prescriptionOriginalFilename=%s
+			prescriptionSavedPath=%s
+			prescriptionUploadedAt=%s
 			""".formatted(
 			storedRequest.requestId(),
 			storedRequest.status(),
@@ -155,7 +170,9 @@ public class MedicineRequestService {
 			storedRequest.phone(),
 			storedRequest.medicineName(),
 			storedRequest.address(),
-			storedRequest.prescriptionFileName() == null ? "" : storedRequest.prescriptionFileName()
+			storedRequest.prescriptionOriginalFilename() == null ? "" : storedRequest.prescriptionOriginalFilename(),
+			storedRequest.prescriptionSavedPath() == null ? "" : storedRequest.prescriptionSavedPath(),
+			storedRequest.prescriptionUploadedAt() == null ? "" : storedRequest.prescriptionUploadedAt()
 		);
 	}
 }

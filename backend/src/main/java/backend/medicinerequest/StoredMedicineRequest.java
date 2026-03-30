@@ -8,8 +8,10 @@ public record StoredMedicineRequest(
 	String phone,
 	String medicineName,
 	String address,
-	String prescriptionFileName,
 	String status,
-	Instant createdAt
+	Instant createdAt,
+	String prescriptionOriginalFilename,
+	String prescriptionSavedPath,
+	Instant prescriptionUploadedAt
 ) {
 }

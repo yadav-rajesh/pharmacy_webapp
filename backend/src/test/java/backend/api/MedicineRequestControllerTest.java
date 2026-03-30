@@ -65,8 +65,16 @@ class MedicineRequestControllerTest {
 			var storedDirectories = requestDirectories.filter(Files::isDirectory).toList();
 
 			assertThat(storedDirectories).hasSize(1);
-			assertThat(Files.exists(storedDirectories.get(0).resolve("request.txt"))).isTrue();
+			var metadataPath = storedDirectories.get(0).resolve("request.txt");
+			var metadata = Files.readString(metadataPath);
+
+			assertThat(Files.exists(metadataPath)).isTrue();
 			assertThat(Files.exists(storedDirectories.get(0).resolve("rx.pdf"))).isTrue();
+			assertThat(metadata).contains("requestId=");
+			assertThat(metadata).contains("prescriptionOriginalFilename=rx.pdf");
+			assertThat(metadata).contains("prescriptionSavedPath=");
+			assertThat(metadata).contains("/rx.pdf");
+			assertThat(metadata).contains("prescriptionUploadedAt=");
 		}
 	}
 
