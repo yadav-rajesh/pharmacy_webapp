@@ -179,7 +179,7 @@ export const orderBenefits = [
   'Medicine availability inquiry ready',
   'Prescription upload field included',
   'Address capture for future delivery flow',
-  'Form submission now opens a WhatsApp order message',
+  'Form submission opens WhatsApp and can also save the request in the backend',
 ]
 
 export const hours = [

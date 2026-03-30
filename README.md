@@ -31,6 +31,8 @@ The React app uses the Vite dev proxy, so requests to `/api/*` are forwarded to 
 
 - The current order flow is WhatsApp-based, so the frontend can be deployed immediately as a static site.
 - Canonical URLs, Open Graph URLs, and page schema use `VITE_SITE_URL` when it is set.
+- The medicine request form can send multipart requests to `POST /api/medicine-requests`.
+- Set `VITE_API_BASE_URL` if your backend is deployed on a different domain from the frontend.
 - Copy `frontend/.env.example` to a real environment variable in your hosting dashboard and set it to your live domain.
 
 ## Deploy on Vercel

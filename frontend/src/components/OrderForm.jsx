@@ -19,6 +19,43 @@ function buildWhatsAppOrderUrl(formState) {
   )}`
 }
 
+function getMedicineRequestsUrl() {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim().replace(/\/+$/, '') ?? ''
+
+  return `${apiBaseUrl}/api/medicine-requests`
+}
+
+async function storeMedicineRequest(formState) {
+  const formData = new FormData()
+
+  formData.append('name', formState.name)
+  formData.append('phone', formState.phone)
+  formData.append('medicineName', formState.medicineName)
+  formData.append('address', formState.address)
+
+  if (formState.prescriptionFile) {
+    formData.append('prescription', formState.prescriptionFile)
+  }
+
+  const response = await fetch(getMedicineRequestsUrl(), {
+    method: 'POST',
+    body: formData,
+  })
+  const contentType = response.headers.get('content-type') ?? ''
+
+  if (!contentType.includes('application/json')) {
+    throw new Error('Medicine request API is not available right now.')
+  }
+
+  const payload = await response.json()
+
+  if (!response.ok) {
+    throw new Error(payload.message ?? 'Medicine request could not be stored right now.')
+  }
+
+  return payload
+}
+
 function OrderForm() {
   const [formState, setFormState] = useState({
     name: '',
@@ -26,8 +63,10 @@ function OrderForm() {
     medicineName: '',
     address: '',
     prescriptionName: '',
+    prescriptionFile: null,
   })
-  const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submissionState, setSubmissionState] = useState(null)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -44,14 +83,33 @@ function OrderForm() {
     setFormState((current) => ({
       ...current,
       prescriptionName: selectedFile ? selectedFile.name : '',
+      prescriptionFile: selectedFile ?? null,
     }))
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
     const whatsappUrl = buildWhatsAppOrderUrl(formState)
-    setSubmitted(true)
+
+    setIsSubmitting(true)
+    setSubmissionState(null)
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+
+    try {
+      const result = await storeMedicineRequest(formState)
+
+      setSubmissionState({
+        tone: 'success',
+        message: `Your request was saved with ID ${result.requestId}. WhatsApp opened with the same details for quick confirmation.`,
+      })
+    } catch (error) {
+      setSubmissionState({
+        tone: 'error',
+        message: `${error.message} WhatsApp opened so you can still send the request directly.`,
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -113,14 +171,16 @@ function OrderForm() {
         </label>
       </div>
 
-      <button className="button-link is-primary submit-button" type="submit">
-        Request Medicine
+      <button className="button-link is-primary submit-button" disabled={isSubmitting} type="submit">
+        {isSubmitting ? 'Submitting Request...' : 'Request Medicine'}
       </button>
 
-      {submitted ? (
-        <p className="success-message">
-          Your details were prepared for WhatsApp. If the chat did not open automatically,
-          use the WhatsApp button on this page and send the same prescription details there.
+      {submissionState ? (
+        <p
+          className={`success-message${submissionState.tone === 'error' ? ' is-error' : ''}`}
+        >
+          {submissionState.message} If the chat did not open automatically, use the
+          WhatsApp button on this page and send the same prescription details there.
         </p>
       ) : null}
     </form>

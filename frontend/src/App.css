@@ -476,12 +476,22 @@
   width: fit-content;
 }
 
+.submit-button:disabled {
+  cursor: wait;
+  opacity: 0.75;
+}
+
 .success-message {
   margin: 0;
   padding: 1rem 1.1rem;
   border-radius: 1rem;
   background: var(--green-soft);
   color: #165e43;
+}
+
+.success-message.is-error {
+  background: rgba(255, 236, 236, 0.9);
+  color: #8a2e2e;
 }
 
 .hours-row {

@@ -37,7 +37,7 @@ function OrderPage() {
       <section className="section order-layout">
         <div className="form-card">
           <SectionHeading
-            description="When the form is submitted, it opens WhatsApp with the medicine request details already filled in."
+            description="When the form is submitted, it opens WhatsApp with the medicine request details and also tries to save the request through the backend API."
             eyebrow="Request Medicine"
             title="Order form"
           />
