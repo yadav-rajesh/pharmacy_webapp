@@ -35,6 +35,8 @@ The React app uses the Vite dev proxy, so requests to `/api/*` are forwarded to 
 - Prescription uploads are stored under the configured `medicine-requests.storage-dir`.
 - MySQL profile settings are available in `backend/src/main/resources/application-mysql.properties`.
 - PostgreSQL profile settings are available in `backend/src/main/resources/application-postgres.properties`.
+- Admin-friendly request endpoints are available at `GET /api/medicine-requests` and `GET /api/medicine-requests/{requestId}`.
+- Request statuses currently use `NEW`, `CONTACTED`, and `FULFILLED`.
 
 ## Production notes
 

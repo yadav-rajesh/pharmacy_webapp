@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
@@ -16,7 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import backend.api.MedicineRequestDetailResponse;
 import backend.api.MedicineRequestResponse;
+import backend.api.MedicineRequestSummaryResponse;
+import backend.api.PrescriptionFileResponse;
 import backend.persistence.entity.MedicineRequest;
 import backend.persistence.entity.PrescriptionFile;
 import backend.persistence.repository.MedicineRequestRepository;
@@ -56,7 +60,7 @@ public class MedicineRequestService {
 			medicineRequest.setPhone(cleanedRequest.phone());
 			medicineRequest.setMedicineName(cleanedRequest.medicineName());
 			medicineRequest.setAddress(cleanedRequest.address());
-			medicineRequest.setStatus("RECEIVED");
+			medicineRequest.setStatus(MedicineRequestStatus.NEW.name());
 			medicineRequest.setCreatedAt(createdAt);
 
 			if (prescriptionUpload != null) {
@@ -82,11 +86,32 @@ public class MedicineRequestService {
 
 		return new MedicineRequestResponse(
 			requestId,
-			"RECEIVED",
+			MedicineRequestStatus.NEW.name(),
 			"Medicine request received successfully.",
 			prescriptionUpload != null,
 			createdAt
 		);
+	}
+
+	@Transactional(readOnly = true)
+	public List<MedicineRequestSummaryResponse> list() {
+		return medicineRequestRepository.findAllByOrderByCreatedAtDescIdDesc()
+			.stream()
+			.map(this::toSummaryResponse)
+			.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public MedicineRequestDetailResponse get(String requestId) {
+		return toDetailResponse(findRequest(requestId));
+	}
+
+	@Transactional
+	public MedicineRequestDetailResponse updateStatus(String requestId, String status) {
+		var medicineRequest = findRequest(requestId);
+		var nextStatus = MedicineRequestStatus.fromInput(status);
+		medicineRequest.setStatus(nextStatus.name());
+		return toDetailResponse(medicineRequestRepository.save(medicineRequest));
 	}
 
 	private CreateMedicineRequest clean(CreateMedicineRequest request) {
@@ -104,6 +129,53 @@ public class MedicineRequestService {
 		}
 
 		return value.trim();
+	}
+
+	private MedicineRequest findRequest(String requestId) {
+		var cleanedRequestId = requireText("Request ID", requestId);
+		return medicineRequestRepository.findByRequestId(cleanedRequestId)
+			.orElseThrow(() -> new MedicineRequestNotFoundException(cleanedRequestId));
+	}
+
+	private MedicineRequestSummaryResponse toSummaryResponse(MedicineRequest medicineRequest) {
+		return new MedicineRequestSummaryResponse(
+			medicineRequest.getRequestId(),
+			medicineRequest.getName(),
+			medicineRequest.getPhone(),
+			medicineRequest.getMedicineName(),
+			normalizeStatus(medicineRequest.getStatus()),
+			medicineRequest.getPrescriptionFile() != null,
+			medicineRequest.getCreatedAt()
+		);
+	}
+
+	private MedicineRequestDetailResponse toDetailResponse(MedicineRequest medicineRequest) {
+		return new MedicineRequestDetailResponse(
+			medicineRequest.getRequestId(),
+			medicineRequest.getName(),
+			medicineRequest.getPhone(),
+			medicineRequest.getMedicineName(),
+			medicineRequest.getAddress(),
+			normalizeStatus(medicineRequest.getStatus()),
+			medicineRequest.getCreatedAt(),
+			toPrescriptionFileResponse(medicineRequest.getPrescriptionFile())
+		);
+	}
+
+	private PrescriptionFileResponse toPrescriptionFileResponse(PrescriptionFile prescriptionFile) {
+		if (prescriptionFile == null) {
+			return null;
+		}
+
+		return new PrescriptionFileResponse(
+			prescriptionFile.getOriginalFilename(),
+			prescriptionFile.getSavedPath(),
+			prescriptionFile.getUploadedAt()
+		);
+	}
+
+	private String normalizeStatus(String storedStatus) {
+		return MedicineRequestStatus.fromStoredValue(storedStatus).name();
 	}
 
 	private StoredPrescriptionUpload storePrescription(String requestId, MultipartFile prescription)
