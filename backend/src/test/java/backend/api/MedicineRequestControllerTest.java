@@ -1,6 +1,7 @@
 package backend.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -34,7 +35,8 @@ import backend.persistence.repository.MedicineRequestRepository;
 	"spring.datasource.driver-class-name=org.h2.Driver",
 	"spring.datasource.username=sa",
 	"spring.datasource.password=",
-	"spring.jpa.hibernate.ddl-auto=create-drop"
+	"spring.jpa.hibernate.ddl-auto=create-drop",
+	"medicine-requests.notifications.whatsapp.recipient-number=919730086267"
 })
 class MedicineRequestControllerTest {
 
@@ -152,6 +154,28 @@ class MedicineRequestControllerTest {
 			.andExpect(jsonPath("$.prescriptionFile.originalFilename").value("rx.pdf"))
 			.andExpect(jsonPath("$.prescriptionFile.savedPath").value(requestId + "/rx.pdf"))
 			.andExpect(jsonPath("$.prescriptionFile.uploadedAt").isNotEmpty());
+	}
+
+	@Test
+	void returnsIntegrationPreview() throws Exception {
+		var requestId = createMedicineRequest(
+			"Rajesh Yadav",
+			"9730086267",
+			"Paracetamol 650",
+			"Ichalkaranji",
+			null
+		);
+
+		mockMvc.perform(get("/api/medicine-requests/{requestId}/integration-preview", requestId))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.requestId").value(requestId))
+			.andExpect(jsonPath("$.emailAlertsEnabled").value(false))
+			.andExpect(jsonPath("$.whatsAppRecipientNumber").value("919730086267"))
+			.andExpect(jsonPath("$.whatsAppMessage", containsString("Request ID: " + requestId)))
+			.andExpect(jsonPath("$.whatsAppShareUrl", containsString("https://wa.me/919730086267?text=")))
+			.andExpect(jsonPath("$.availableStatuses[0]").value("NEW"))
+			.andExpect(jsonPath("$.availableStatuses[1]").value("CONTACTED"))
+			.andExpect(jsonPath("$.availableStatuses[2]").value("FULFILLED"));
 	}
 
 	@Test

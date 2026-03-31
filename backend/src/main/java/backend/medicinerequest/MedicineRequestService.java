@@ -18,9 +18,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import backend.api.MedicineRequestDetailResponse;
+import backend.api.MedicineRequestIntegrationPreviewResponse;
 import backend.api.MedicineRequestResponse;
 import backend.api.MedicineRequestSummaryResponse;
 import backend.api.PrescriptionFileResponse;
+import backend.notification.MedicineRequestNotificationService;
 import backend.persistence.entity.MedicineRequest;
 import backend.persistence.entity.PrescriptionFile;
 import backend.persistence.repository.MedicineRequestRepository;
@@ -32,13 +34,16 @@ public class MedicineRequestService {
 
 	private final Path storageRoot;
 	private final MedicineRequestRepository medicineRequestRepository;
+	private final MedicineRequestNotificationService medicineRequestNotificationService;
 
 	public MedicineRequestService(
 		@Value("${medicine-requests.storage-dir}") String storageDirectory,
-		MedicineRequestRepository medicineRequestRepository
+		MedicineRequestRepository medicineRequestRepository,
+		MedicineRequestNotificationService medicineRequestNotificationService
 	) {
 		this.storageRoot = Path.of(storageDirectory).toAbsolutePath().normalize();
 		this.medicineRequestRepository = medicineRequestRepository;
+		this.medicineRequestNotificationService = medicineRequestNotificationService;
 	}
 
 	@Transactional
@@ -72,7 +77,8 @@ public class MedicineRequestService {
 				medicineRequest.setPrescriptionFile(prescriptionFile);
 			}
 
-			medicineRequestRepository.save(medicineRequest);
+			var savedRequest = medicineRequestRepository.save(medicineRequest);
+			medicineRequestNotificationService.sendNewRequestAlert(savedRequest);
 		} catch (IOException exception) {
 			cleanupStoredPrescription(prescriptionUpload);
 			throw new MedicineRequestStorageException(
@@ -104,6 +110,11 @@ public class MedicineRequestService {
 	@Transactional(readOnly = true)
 	public MedicineRequestDetailResponse get(String requestId) {
 		return toDetailResponse(findRequest(requestId));
+	}
+
+	@Transactional(readOnly = true)
+	public MedicineRequestIntegrationPreviewResponse getIntegrationPreview(String requestId) {
+		return medicineRequestNotificationService.buildIntegrationPreview(findRequest(requestId));
 	}
 
 	@Transactional

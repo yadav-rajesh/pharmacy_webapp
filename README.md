@@ -37,6 +37,13 @@ The React app uses the Vite dev proxy, so requests to `/api/*` are forwarded to 
 - PostgreSQL profile settings are available in `backend/src/main/resources/application-postgres.properties`.
 - Admin-friendly request endpoints are available at `GET /api/medicine-requests` and `GET /api/medicine-requests/{requestId}`.
 - Request statuses currently use `NEW`, `CONTACTED`, and `FULFILLED`.
+- Integration preview data for a future admin dashboard is available at `GET /api/medicine-requests/{requestId}/integration-preview`.
+
+## Backend notifications
+
+- Optional email alerts are controlled with `medicine-requests.notifications.email.*` properties.
+- WhatsApp-ready admin previews use `medicine-requests.notifications.whatsapp.recipient-number`.
+- New request alerts are best-effort, so a temporary mail failure will not block the medicine request API.
 
 ## Production notes
 

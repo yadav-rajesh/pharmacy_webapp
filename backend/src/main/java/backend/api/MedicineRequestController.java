@@ -38,6 +38,13 @@ public class MedicineRequestController {
 		return medicineRequestService.get(requestId);
 	}
 
+	@GetMapping("/{requestId}/integration-preview")
+	public MedicineRequestIntegrationPreviewResponse getMedicineRequestIntegrationPreview(
+		@PathVariable String requestId
+	) {
+		return medicineRequestService.getIntegrationPreview(requestId);
+	}
+
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<MedicineRequestResponse> createMedicineRequest(
 		@RequestParam String name,
