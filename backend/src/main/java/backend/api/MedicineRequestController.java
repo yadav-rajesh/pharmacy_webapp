@@ -2,10 +2,13 @@ package backend.api;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,24 +50,17 @@ public class MedicineRequestController {
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<MedicineRequestResponse> createMedicineRequest(
-		@RequestParam String name,
-		@RequestParam String phone,
-		@RequestParam String medicineName,
-		@RequestParam String address,
+		@Valid @ModelAttribute CreateMedicineRequest request,
 		@RequestParam(required = false) MultipartFile prescription
 	) {
-		var response = medicineRequestService.create(
-			new CreateMedicineRequest(name, phone, medicineName, address),
-			prescription
-		);
-
+		var response = medicineRequestService.create(request, prescription);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PatchMapping(path = "/{requestId}/status", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public MedicineRequestDetailResponse updateMedicineRequestStatus(
 		@PathVariable String requestId,
-		@RequestBody UpdateMedicineRequestStatusRequest request
+		@Valid @RequestBody UpdateMedicineRequestStatusRequest request
 	) {
 		return medicineRequestService.updateStatus(requestId, request.status());
 	}

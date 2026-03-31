@@ -16,7 +16,7 @@ cd backend
 
 Backend URL: `http://localhost:8080/api/health`
 
-The backend now persists medicine requests by default with a local H2 database and stores uploaded prescription files on disk.
+The backend persists medicine requests, stores uploaded prescriptions on disk, and can send optional notifications.
 
 Run the frontend:
 
@@ -39,6 +39,16 @@ The React app uses the Vite dev proxy, so requests to `/api/*` are forwarded to 
 - Request statuses currently use `NEW`, `CONTACTED`, and `FULFILLED`.
 - Integration preview data for a future admin dashboard is available at `GET /api/medicine-requests/{requestId}/integration-preview`.
 
+## Backend hardening
+
+- Request validation now checks required fields, phone format, and field lengths.
+- Prescription uploads are limited by size, extension, and content type.
+- CORS is configurable through `backend.cors.*` properties.
+- Public medicine request creation is protected by IP-based rate limiting.
+- Production-safe error responses cover validation, oversized uploads, rate limits, and unexpected failures.
+- Environment variables can override server, datasource, upload, notification, CORS, and rate-limit settings.
+- `application-production.properties` disables the H2 console and switches Hibernate to `validate`.
+
 ## Backend notifications
 
 - Optional email alerts are controlled with `medicine-requests.notifications.email.*` properties.
@@ -47,6 +57,9 @@ The React app uses the Vite dev proxy, so requests to `/api/*` are forwarded to 
 
 ## Production notes
 
+- Recommended production profile: `SPRING_PROFILES_ACTIVE=production`
+- Set `BACKEND_CORS_ALLOWED_ORIGINS` to your real frontend domain list.
+- Set `SPRING_DATASOURCE_*` variables or activate the MySQL/Postgres profile for production storage.
 - The current order flow is WhatsApp-based, so the frontend can be deployed immediately as a static site.
 - Canonical URLs, Open Graph URLs, and page schema use `VITE_SITE_URL` when it is set.
 - The medicine request form can send multipart requests to `POST /api/medicine-requests`.

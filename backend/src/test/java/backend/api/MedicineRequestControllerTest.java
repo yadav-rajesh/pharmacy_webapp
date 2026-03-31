@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,7 +38,10 @@ import backend.persistence.repository.MedicineRequestRepository;
 	"spring.datasource.username=sa",
 	"spring.datasource.password=",
 	"spring.jpa.hibernate.ddl-auto=create-drop",
-	"medicine-requests.notifications.whatsapp.recipient-number=919730086267"
+	"medicine-requests.notifications.whatsapp.recipient-number=919730086267",
+	"medicine-requests.rate-limit.enabled=false",
+	"medicine-requests.upload.max-file-size-bytes=1024",
+	"backend.cors.allowed-origins=http://localhost:5173,http://127.0.0.1:5173"
 })
 class MedicineRequestControllerTest {
 
@@ -179,6 +184,17 @@ class MedicineRequestControllerTest {
 	}
 
 	@Test
+	void allowsCorsPreflightFromConfiguredOrigin() throws Exception {
+		mockMvc.perform(
+			options("/api/medicine-requests")
+				.header("Origin", "http://localhost:5173")
+				.header("Access-Control-Request-Method", "POST")
+		)
+			.andExpect(status().isOk())
+			.andExpect(header().string("Access-Control-Allow-Origin", "http://localhost:5173"));
+	}
+
+	@Test
 	void updatesMedicineRequestStatus() throws Exception {
 		var requestId = createMedicineRequest(
 			"Rajesh Yadav",
@@ -229,6 +245,20 @@ class MedicineRequestControllerTest {
 	}
 
 	@Test
+	void rejectsInvalidPhoneNumber() throws Exception {
+		mockMvc.perform(
+			multipart("/api/medicine-requests")
+				.param("name", "Rajesh Yadav")
+				.param("phone", "abc123")
+				.param("medicineName", "Paracetamol 650")
+				.param("address", "Ichalkaranji")
+		)
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+			.andExpect(jsonPath("$.message").value("Phone number must contain 7 to 20 valid characters."));
+	}
+
+	@Test
 	void rejectsMissingName() throws Exception {
 		mockMvc.perform(
 			multipart("/api/medicine-requests")
@@ -240,6 +270,28 @@ class MedicineRequestControllerTest {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.status").value("BAD_REQUEST"))
 			.andExpect(jsonPath("$.message").value("Name is required."));
+	}
+
+	@Test
+	void rejectsPrescriptionLargerThanConfiguredLimit() throws Exception {
+		var largeFile = new byte[2048];
+		var prescription = new MockMultipartFile(
+			"prescription",
+			"rx.pdf",
+			"application/pdf",
+			largeFile
+		);
+
+		mockMvc.perform(
+			multipart("/api/medicine-requests")
+				.file(prescription)
+				.param("name", "Rajesh Yadav")
+				.param("phone", "9730086267")
+				.param("medicineName", "Paracetamol 650")
+				.param("address", "Ichalkaranji")
+		)
+			.andExpect(status().isPayloadTooLarge())
+			.andExpect(jsonPath("$.message").value("Prescription file must be 1 KB or smaller."));
 	}
 
 	@Test

@@ -6,10 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,18 +32,25 @@ import backend.persistence.repository.MedicineRequestRepository;
 @Service
 public class MedicineRequestService {
 
-	private static final Set<String> ALLOWED_EXTENSIONS = Set.of("jpg", "jpeg", "png", "pdf");
-
 	private final Path storageRoot;
+	private final Set<String> allowedExtensions;
+	private final Set<String> allowedContentTypes;
+	private final long maxFileSizeBytes;
 	private final MedicineRequestRepository medicineRequestRepository;
 	private final MedicineRequestNotificationService medicineRequestNotificationService;
 
 	public MedicineRequestService(
-		@Value("${medicine-requests.storage-dir}") String storageDirectory,
+		@Value("${medicine-requests.storage-dir:data/medicine-requests}") String storageDirectory,
+		@Value("${medicine-requests.upload.max-file-size-bytes:5242880}") long maxFileSizeBytes,
+		@Value("${medicine-requests.upload.allowed-extensions:jpg,jpeg,png,pdf}") String allowedExtensions,
+		@Value("${medicine-requests.upload.allowed-content-types:image/jpeg,image/png,application/pdf}") String allowedContentTypes,
 		MedicineRequestRepository medicineRequestRepository,
 		MedicineRequestNotificationService medicineRequestNotificationService
 	) {
 		this.storageRoot = Path.of(storageDirectory).toAbsolutePath().normalize();
+		this.allowedExtensions = splitAndNormalize(allowedExtensions);
+		this.allowedContentTypes = splitAndNormalize(allowedContentTypes);
+		this.maxFileSizeBytes = maxFileSizeBytes;
 		this.medicineRequestRepository = medicineRequestRepository;
 		this.medicineRequestNotificationService = medicineRequestNotificationService;
 	}
@@ -195,6 +204,10 @@ public class MedicineRequestService {
 			return null;
 		}
 
+		if (prescription.getSize() > maxFileSizeBytes) {
+			throw new PrescriptionFileTooLargeException(buildFileSizeMessage());
+		}
+
 		Files.createDirectories(storageRoot);
 
 		var requestDirectory = storageRoot.resolve(requestId).normalize();
@@ -204,20 +217,28 @@ public class MedicineRequestService {
 			prescription.getOriginalFilename() == null ? "" : prescription.getOriginalFilename()
 		);
 
-		if (originalFilename.isBlank()) {
-			throw new IllegalArgumentException("Prescription file name is invalid.");
-		}
-
-		if (originalFilename.contains("..")) {
+		if (originalFilename.isBlank() || originalFilename.contains("..")) {
 			throw new IllegalArgumentException("Prescription file name is invalid.");
 		}
 
 		var extension = StringUtils.getFilenameExtension(originalFilename);
 
-		if (extension == null || !ALLOWED_EXTENSIONS.contains(extension.toLowerCase(Locale.ROOT))) {
+		if (extension == null || !allowedExtensions.contains(extension.toLowerCase(Locale.ROOT))) {
 			throw new IllegalArgumentException(
 				"Prescription file must be a PDF, JPG, JPEG, or PNG."
 			);
+		}
+
+		var contentType = prescription.getContentType();
+
+		if (contentType != null && !contentType.isBlank()) {
+			var normalizedContentType = contentType.toLowerCase(Locale.ROOT);
+
+			if (!allowedContentTypes.contains(normalizedContentType)) {
+				throw new IllegalArgumentException(
+					"Prescription file type must be a PDF, JPG, JPEG, or PNG."
+				);
+			}
 		}
 
 		var storedFile = requestDirectory.resolve(originalFilename).normalize();
@@ -239,6 +260,24 @@ public class MedicineRequestService {
 			savedPath,
 			uploadedAt
 		);
+	}
+
+	private String buildFileSizeMessage() {
+		if (maxFileSizeBytes < 1024 * 1024) {
+			var maxKilobytes = maxFileSizeBytes / 1024d;
+			return String.format(Locale.ROOT, "Prescription file must be %.0f KB or smaller.", maxKilobytes);
+		}
+
+		var maxMegabytes = maxFileSizeBytes / 1024d / 1024d;
+		return String.format(Locale.ROOT, "Prescription file must be %.1f MB or smaller.", maxMegabytes);
+	}
+
+	private Set<String> splitAndNormalize(String rawValue) {
+		return Arrays.stream(rawValue.split(","))
+			.map(String::trim)
+			.filter(value -> !value.isBlank())
+			.map(value -> value.toLowerCase(Locale.ROOT))
+			.collect(Collectors.toUnmodifiableSet());
 	}
 
 	private void cleanupStoredPrescription(StoredPrescriptionUpload prescriptionUpload) {
