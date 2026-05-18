@@ -677,6 +677,10 @@
   .form-grid label:nth-child(5) {
     grid-column: span 2;
   }
+
+  .form-field-full {
+    grid-column: span 2;
+  }
 }
 
 @media (max-width: 759px) {
@@ -769,3 +773,4 @@
     box-shadow: none;
   }
 }
+

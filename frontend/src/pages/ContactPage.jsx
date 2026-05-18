@@ -1,4 +1,5 @@
 import ActionButtons from '../components/ActionButtons.jsx'
+import ContactInquiryForm from '../components/ContactInquiryForm.jsx'
 import PageHero from '../components/PageHero.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import usePageMeta from '../hooks/usePageMeta.js'
@@ -79,6 +80,35 @@ function ContactPage() {
           <p className="map-note">
             Store address: {pharmacy.addressLine}
           </p>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="order-layout">
+          <div className="form-card">
+            <SectionHeading
+              description="Use this form if you want the store to call you back about medicine availability, repeat medicines, or general pharmacy support."
+              eyebrow="Contact Inquiry"
+              title="Send an inquiry to the store"
+            />
+            <ContactInquiryForm />
+          </div>
+
+          <article className="info-card stack-card">
+            <p className="eyebrow">Fastest Contact Paths</p>
+            <h3>Use the form for follow-up, or call for urgent needs</h3>
+            <p>
+              The contact form now saves your inquiry in the backend so it can be
+              followed up properly. If the request is urgent, use the direct call or
+              WhatsApp actions instead of waiting.
+            </p>
+            <ul className="plain-list">
+              <li>Use the form for callbacks and general medicine support</li>
+              <li>Call directly for urgent or same-day medicine needs</li>
+              <li>Use WhatsApp if you already know the medicine details</li>
+            </ul>
+            <ActionButtons compact />
+          </article>
         </div>
       </section>
 
